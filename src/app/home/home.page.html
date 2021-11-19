@@ -11,8 +11,11 @@
     <ion-label>Titulo</ion-label>
     <ion-input [(ngModel)]="tareaEditando.titulo"></ion-input>
   </ion-item>
+
   <ion-item>
     <ion-label>Descripción</ion-label>
     <ion-input [(ngModel)]="tareaEditando.descripcion"></ion-input>
   </ion-item>
+
+  <ion-button (click)="clicBotonInsertar()">Añadir tarea</ion-button>
 </ion-content>
