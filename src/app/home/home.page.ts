@@ -15,6 +15,7 @@ export class HomePage {
 
     //Crear una tarea vacía al empezar
     this.tareaEditando = {} as Tarea;
+    this.obtenerListaTareas();
 
 
   }
@@ -29,6 +30,51 @@ export class HomePage {
 
     });
 
+  }
+
+  arrayColeccionTareas: any = [{
+    id: "",
+    data: {} as Tarea
+   }];
+
+  obtenerListaTareas(){
+    this.firestoreService.consultar("tareas").subscribe((resultadoConsultaTareas) => {
+      this.arrayColeccionTareas = [];
+      resultadoConsultaTareas.forEach((datosTarea: any) => {
+        this.arrayColeccionTareas.push({
+          id: datosTarea.payload.doc.id,
+          data: datosTarea.payload.doc.data()
+        });
+      })
+    });
+  }
+
+  idTareaSelec: string;
+
+  selecTarea(tareaSelec) {
+    console.log("Tarea seleccionada: ");
+    console.log(tareaSelec);
+    this.idTareaSelec = tareaSelec.id;
+    this.tareaEditando.titulo = tareaSelec.data.titulo;
+    this.tareaEditando.descripcion = tareaSelec.data.descripcion;
+  }
+
+  clicBotonBorrar() {
+    this.firestoreService.borrar("tareas", this.idTareaSelec).then(() => {
+      // Actualizar la lista completa
+      this.obtenerListaTareas();
+      // Limpiar datos de pantalla
+      this.tareaEditando = {} as Tarea;
+    })
+  }
+
+  clicBotonModificar() {
+    this.firestoreService.actualizar("tareas", this.idTareaSelec, this.tareaEditando).then(() => {
+      // Actualizar la lista completa
+      this.obtenerListaTareas();
+      // Limpiar datos de pantalla
+      this.tareaEditando = {} as Tarea;
+    })
   }
 
 }

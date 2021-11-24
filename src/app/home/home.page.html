@@ -7,6 +7,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+
   <ion-item>
     <ion-label>Titulo</ion-label>
     <ion-input [(ngModel)]="tareaEditando.titulo"></ion-input>
@@ -18,4 +19,28 @@
   </ion-item>
 
   <ion-button (click)="clicBotonInsertar()">Añadir tarea</ion-button>
-</ion-content>
+  <h1>LISTA DE TAREAS</h1>
+  <ion-list>
+    <ion-item *ngFor="let documentTarea of arrayColeccionTareas">
+      <ion-grid>
+        <ion-row>
+          <h2>{{documentTarea.data.titulo}}</h2>
+        </ion-row>
+        <ion-row>
+          <p>{{documentTarea.data.descripcion}}</p>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-item *ngFor="let documentTarea of arrayColeccionTareas" (click)="selecTarea(documentTarea)">
+      <ion-button>Selecionar tarea</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-button (click)="clicBotonBorrar()">Borrar tarea</ion-button>
+
+  <ion-button (click)="clicBotonModificar()">Modificar tarea</ion-button>
+
+  </ion-content>
