@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FirestoreService } from '../firestore.service';
-import { Tarea } from '../tarea';
+import { Jugador } from '../jugador';
 
 @Component({
   selector: 'app-home',
@@ -9,71 +9,73 @@ import { Tarea } from '../tarea';
 })
 export class HomePage {
 
-  tareaEditando: Tarea;
+  estadistica: Jugador;
 
   constructor(private firestoreService: FirestoreService) {
 
     //Crear una tarea vacía al empezar
-    this.tareaEditando = {} as Tarea;
-    this.obtenerListaTareas();
+    this.estadistica = {} as Jugador;
+    this.obtenerListaJugadores();
 
 
   }
 
   clicBotonInsertar(){
-    this.firestoreService.insertar("tareas", this.tareaEditando)
+    this.firestoreService.insertar("jugador", this.estadistica)
     .then(() => {
-        console.log("Tarea creada correctamente");
-        //Limpia el contenido de la tarea que se estaba editando
-        this.tareaEditando = {} as Tarea;
+        console.log("Jugador creado correctamente");
+        //Limpia el contenido del jugador que se estaba editando
+        this.estadistica = {} as Jugador;
     }, (error) => {
 
     });
 
   }
 
-  arrayColeccionTareas: any = [{
+  arrayColeccionJugadores: any = [{
     id: "",
-    data: {} as Tarea
+    data: {} as Jugador
    }];
 
-  obtenerListaTareas(){
-    this.firestoreService.consultar("tareas").subscribe((resultadoConsultaTareas) => {
-      this.arrayColeccionTareas = [];
-      resultadoConsultaTareas.forEach((datosTarea: any) => {
-        this.arrayColeccionTareas.push({
-          id: datosTarea.payload.doc.id,
-          data: datosTarea.payload.doc.data()
+  obtenerListaJugadores(){
+    this.firestoreService.consultar("jugadores").subscribe((resultadoConsultaJugadores) => {
+      this.arrayColeccionJugadores = [];
+      resultadoConsultaJugadores.forEach((datosJugador: any) => {
+        this.arrayColeccionJugadores.push({
+          id: datosJugador.payload.doc.id,
+          data: datosJugador.payload.doc.data()
         });
       })
     });
   }
 
-  idTareaSelec: string;
+  idJugadorSelec: string;
 
-  selecTarea(tareaSelec) {
-    console.log("Tarea seleccionada: ");
-    console.log(tareaSelec);
-    this.idTareaSelec = tareaSelec.id;
-    this.tareaEditando.titulo = tareaSelec.data.titulo;
-    this.tareaEditando.descripcion = tareaSelec.data.descripcion;
+  selecJugador(jugadorSelec) {
+    console.log("Jugador seleccionado: ");
+    console.log(jugadorSelec);
+    this.idJugadorSelec = jugadorSelec.id;
+    this.estadistica.nombre = jugadorSelec.data.nombre;
+    this.estadistica.apellidos = jugadorSelec.data.apellidos;
+    this.estadistica.posicion = jugadorSelec.data.posicion;
+    this.estadistica.dorsal = jugadorSelec.data.dorsal;
   }
 
   clicBotonBorrar() {
-    this.firestoreService.borrar("tareas", this.idTareaSelec).then(() => {
+    this.firestoreService.borrar("jugadores", this.idJugadorSelec).then(() => {
       // Actualizar la lista completa
-      this.obtenerListaTareas();
+      this.obtenerListaJugadores();
       // Limpiar datos de pantalla
-      this.tareaEditando = {} as Tarea;
+      this.estadistica = {} as Jugador;
     })
   }
 
   clicBotonModificar() {
-    this.firestoreService.actualizar("tareas", this.idTareaSelec, this.tareaEditando).then(() => {
+    this.firestoreService.actualizar("jugadores", this.idJugadorSelec, this.estadistica).then(() => {
       // Actualizar la lista completa
-      this.obtenerListaTareas();
+      this.obtenerListaJugadores();
       // Limpiar datos de pantalla
-      this.tareaEditando = {} as Tarea;
+      this.estadistica = {} as Jugador;
     })
   }
 

@@ -1,46 +1,56 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Ejemplo Firestore
+      Estadisticas de los jugadores
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
   <ion-item>
-    <ion-label>Titulo</ion-label>
-    <ion-input [(ngModel)]="tareaEditando.titulo"></ion-input>
+    <ion-label>Nombre</ion-label>
+    <ion-input [(ngModel)]="estadistica.nombre"></ion-input>
   </ion-item>
-
   <ion-item>
-    <ion-label>Descripción</ion-label>
-    <ion-input [(ngModel)]="tareaEditando.descripcion"></ion-input>
+    <ion-label>Apellidos</ion-label>
+    <ion-input [(ngModel)]="estadistica.apellidos"></ion-input>
   </ion-item>
-
-  <ion-button (click)="clicBotonInsertar()">Añadir tarea</ion-button>
-  <h1>LISTA DE TAREAS</h1>
+  <ion-item>
+    <ion-label>Posicion</ion-label>
+    <ion-input [(ngModel)]="estadistica.posicion"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Dorsal</ion-label>
+    <ion-input [(ngModel)]="estadistica.dorsal"></ion-input>
+  </ion-item>
+  <ion-button (click)="clicBotonInsertar()">Añadir Jugador</ion-button>
+  <h1>LISTA DE JUGADORES</h1>
   <ion-list>
-    <ion-item *ngFor="let documentTarea of arrayColeccionTareas">
+    <ion-item *ngFor="let documentJugador of arrayColeccionJugadores">
       <ion-grid>
         <ion-row>
-          <h2>{{documentTarea.data.titulo}}</h2>
+          <h2>{{documentJugador.data.nombre}}</h2>
         </ion-row>
         <ion-row>
-          <p>{{documentTarea.data.descripcion}}</p>
+          <p>{{documentJugador.data.apellios}}</p>
+        </ion-row>
+        <ion-row>
+          <p>{{documentJugador.data.posicion}}</p>
+        </ion-row>
+        <ion-row>
+          <p>{{documentJugador.data.dorsal}}</p>
         </ion-row>
       </ion-grid>
     </ion-item>
   </ion-list>
-
   <ion-list>
-    <ion-item *ngFor="let documentTarea of arrayColeccionTareas" (click)="selecTarea(documentTarea)">
-      <ion-button>Selecionar tarea</ion-button>
+    <ion-item *ngFor="let documentJugador of arrayColeccionJugadores" (click)="selecJugador(documentJugador)">
+      <ion-button>Selecionar Jugador</ion-button>
     </ion-item>
   </ion-list>
 
-  <ion-button (click)="clicBotonBorrar()">Borrar tarea</ion-button>
+  <ion-button (click)="clicBotonBorrar()">Borrar jugador</ion-button>
 
-  <ion-button (click)="clicBotonModificar()">Modificar tarea</ion-button>
+  <ion-button (click)="clicBotonModificar()">Modificar jugador</ion-button>
 
   </ion-content>
