@@ -26,13 +26,13 @@
   <ion-button (click)="clicBotonInsertar()">Añadir Jugador</ion-button>
   <h1>LISTA DE JUGADORES</h1>
   <ion-list>
-    <ion-item *ngFor="let documentJugador of arrayColeccionJugadores">
+    <ion-item *ngFor="let documentJugador of arrayColeccionJugadores" (click)="selecJugador(documentJugador)">
       <ion-grid>
         <ion-row>
           <h2>{{documentJugador.data.nombre}}</h2>
         </ion-row>
         <ion-row>
-          <p>{{documentJugador.data.apellios}}</p>
+          <p>{{documentJugador.data.apellidos}}</p>
         </ion-row>
         <ion-row>
           <p>{{documentJugador.data.posicion}}</p>
@@ -41,11 +41,6 @@
           <p>{{documentJugador.data.dorsal}}</p>
         </ion-row>
       </ion-grid>
-    </ion-item>
-  </ion-list>
-  <ion-list>
-    <ion-item *ngFor="let documentJugador of arrayColeccionJugadores" (click)="selecJugador(documentJugador)">
-      <ion-button>Selecionar Jugador</ion-button>
     </ion-item>
   </ion-list>
 

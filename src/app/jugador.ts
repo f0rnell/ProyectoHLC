@@ -1,6 +1,5 @@
 
 
-
 export interface Jugador {
 
     nombre: string;
@@ -8,5 +7,4 @@ export interface Jugador {
     posicion: string;
     dorsal: number;
     
-
 }

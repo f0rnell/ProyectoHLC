@@ -11,6 +11,14 @@ export class HomePage {
 
   estadistica: Jugador;
 
+  arrayColeccionJugadores: any = [{
+    id: "",
+    data: {} as Jugador
+   }];
+
+   
+  idJugadorSelec: string;
+
   constructor(private firestoreService: FirestoreService) {
 
     //Crear una tarea vacía al empezar
@@ -32,15 +40,12 @@ export class HomePage {
 
   }
 
-  arrayColeccionJugadores: any = [{
-    id: "",
-    data: {} as Jugador
-   }];
-
   obtenerListaJugadores(){
-    this.firestoreService.consultar("jugadores").subscribe((resultadoConsultaJugadores) => {
+    console.log("Obteniendo jugadores");
+    this.firestoreService.consultar("jugador").subscribe((resultadoConsultaJugadores) => {
       this.arrayColeccionJugadores = [];
       resultadoConsultaJugadores.forEach((datosJugador: any) => {
+        console.log(datosJugador);
         this.arrayColeccionJugadores.push({
           id: datosJugador.payload.doc.id,
           data: datosJugador.payload.doc.data()
@@ -49,7 +54,6 @@ export class HomePage {
     });
   }
 
-  idJugadorSelec: string;
 
   selecJugador(jugadorSelec) {
     console.log("Jugador seleccionado: ");
@@ -62,7 +66,7 @@ export class HomePage {
   }
 
   clicBotonBorrar() {
-    this.firestoreService.borrar("jugadores", this.idJugadorSelec).then(() => {
+    this.firestoreService.borrar("jugador", this.idJugadorSelec).then(() => {
       // Actualizar la lista completa
       this.obtenerListaJugadores();
       // Limpiar datos de pantalla
@@ -71,7 +75,7 @@ export class HomePage {
   }
 
   clicBotonModificar() {
-    this.firestoreService.actualizar("jugadores", this.idJugadorSelec, this.estadistica).then(() => {
+    this.firestoreService.actualizar("jugador", this.idJugadorSelec, this.estadistica).then(() => {
       // Actualizar la lista completa
       this.obtenerListaJugadores();
       // Limpiar datos de pantalla
