@@ -7,6 +7,10 @@ export interface Jugador {
     apellidos: string;
     posicion: string;
     dorsal: number;
+    equipo: string;
+    golesTemporada: number;
+    asistencias: number;
+    partidosJugados: number;
     
 
 }

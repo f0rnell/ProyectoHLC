@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FirestoreService } from '../firestore.service';
 import { Jugador } from '../jugador';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -11,9 +12,9 @@ export class HomePage {
 
   estadistica: Jugador;
 
-  constructor(private firestoreService: FirestoreService) {
+  constructor(private firestoreService: FirestoreService, private router : Router) {
 
-    //Crear una tarea vacía al empezar
+    //Crear una jugador vacía al empezar
     this.estadistica = {} as Jugador;
     this.obtenerListaJugadores();
 
@@ -38,7 +39,7 @@ export class HomePage {
    }];
 
   obtenerListaJugadores(){
-    this.firestoreService.consultar("jugadores").subscribe((resultadoConsultaJugadores) => {
+    this.firestoreService.consultar("jugador").subscribe((resultadoConsultaJugadores) => {
       this.arrayColeccionJugadores = [];
       resultadoConsultaJugadores.forEach((datosJugador: any) => {
         this.arrayColeccionJugadores.push({
@@ -55,14 +56,19 @@ export class HomePage {
     console.log("Jugador seleccionado: ");
     console.log(jugadorSelec);
     this.idJugadorSelec = jugadorSelec.id;
+    this.router.navigate(['/detalle', this.idJugadorSelec]);
     this.estadistica.nombre = jugadorSelec.data.nombre;
     this.estadistica.apellidos = jugadorSelec.data.apellidos;
     this.estadistica.posicion = jugadorSelec.data.posicion;
+    this.estadistica.equipo = jugadorSelec.data.equipo;
     this.estadistica.dorsal = jugadorSelec.data.dorsal;
+    this.estadistica.golesTemporada = jugadorSelec.data.golesTemporada;
+    this.estadistica.asistencias = jugadorSelec.data.asistencias;
+    this.estadistica.partidosJugados = jugadorSelec.data.partidosJugados;
   }
 
   clicBotonBorrar() {
-    this.firestoreService.borrar("jugadores", this.idJugadorSelec).then(() => {
+    this.firestoreService.borrar("jugador", this.idJugadorSelec).then(() => {
       // Actualizar la lista completa
       this.obtenerListaJugadores();
       // Limpiar datos de pantalla
@@ -71,7 +77,7 @@ export class HomePage {
   }
 
   clicBotonModificar() {
-    this.firestoreService.actualizar("jugadores", this.idJugadorSelec, this.estadistica).then(() => {
+    this.firestoreService.actualizar("jugador", this.idJugadorSelec, this.estadistica).then(() => {
       // Actualizar la lista completa
       this.obtenerListaJugadores();
       // Limpiar datos de pantalla

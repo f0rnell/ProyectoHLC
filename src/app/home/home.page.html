@@ -5,52 +5,74 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content [fullscreen]="true">
   <ion-item>
-    <ion-label>Nombre</ion-label>
+    <ion-label>Nombre:</ion-label>
     <ion-input [(ngModel)]="estadistica.nombre"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Apellidos</ion-label>
+    <ion-label>Apellidos:</ion-label>
     <ion-input [(ngModel)]="estadistica.apellidos"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Posicion</ion-label>
+    <ion-label>Posicion:</ion-label>
     <ion-input [(ngModel)]="estadistica.posicion"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Dorsal</ion-label>
+    <ion-label>Equipo:</ion-label>
+    <ion-input [(ngModel)]="estadistica.equipo"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Dorsal:</ion-label>
     <ion-input [(ngModel)]="estadistica.dorsal"></ion-input>
   </ion-item>
+  <ion-item>
+    <ion-label>Goles Temporada:</ion-label>
+    <ion-input [(ngModel)]="estadistica.golesTemporada"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Asistencias:</ion-label>
+    <ion-input [(ngModel)]="estadistica.asistencias"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Partidos Jugados:</ion-label>
+    <ion-input [(ngModel)]="estadistica.partidosJugados"></ion-input>
+  </ion-item>
   <ion-button (click)="clicBotonInsertar()">Añadir Jugador</ion-button>
+  <ion-button (click)="clicBotonBorrar()">Borrar jugador</ion-button>
+  <ion-button (click)="clicBotonModificar()">Modificar jugador</ion-button>
   <h1>LISTA DE JUGADORES</h1>
   <ion-list>
     <ion-item *ngFor="let documentJugador of arrayColeccionJugadores">
       <ion-grid>
         <ion-row>
-          <h2>{{documentJugador.data.nombre}}</h2>
+          <h2>Nombre: {{documentJugador.data.nombre}}</h2>
         </ion-row>
         <ion-row>
-          <p>{{documentJugador.data.apellios}}</p>
+          <p>Apellidos: {{documentJugador.data.apellidos}}</p>
         </ion-row>
         <ion-row>
-          <p>{{documentJugador.data.posicion}}</p>
+          <p>Posición: {{documentJugador.data.posicion}}</p>
         </ion-row>
         <ion-row>
-          <p>{{documentJugador.data.dorsal}}</p>
+          <p>Equipo: {{documentJugador.data.equipo}}</p>
+        </ion-row>
+        <ion-row>
+          <p>Dorsal: {{documentJugador.data.dorsal}}</p>
+        </ion-row>
+        <ion-row>
+          <p>Goles Temporada: {{documentJugador.data.golesTemporada}}</p>
+        </ion-row>
+        <ion-row>
+          <p>Asistencias: {{documentJugador.data.asistencias}}</p>
+        </ion-row>
+        <ion-row>
+          <p>Partidos Jugados: {{documentJugador.data.partidosJugados}}</p>
+        </ion-row>
+        <ion-row (click)="selecJugador(documentJugador)">
+          <ion-button>Selecionar Jugador</ion-button>
         </ion-row>
       </ion-grid>
     </ion-item>
   </ion-list>
-  <ion-list>
-    <ion-item *ngFor="let documentJugador of arrayColeccionJugadores" (click)="selecJugador(documentJugador)">
-      <ion-button>Selecionar Jugador</ion-button>
-    </ion-item>
-  </ion-list>
-
-  <ion-button (click)="clicBotonBorrar()">Borrar jugador</ion-button>
-
-  <ion-button (click)="clicBotonModificar()">Modificar jugador</ion-button>
-
   </ion-content>

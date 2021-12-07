@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>detalle</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <p>{{id}}</p>
+  <ion-item>
+    <ion-label>Nombre:</ion-label>
+    <!-- <ion-input [(ngModel)]="estadistica.nombre"></ion-input> -->
+  </ion-item>
+  <ion-item>
+    <ion-label>Apellidos:</ion-label>
+    <!-- <ion-input [(ngModel)]="estadistica.apellidos"></ion-input> -->
+  </ion-item>
+  <ion-item>
+    <ion-label>Posicion:</ion-label>
+    <!-- <ion-input [(ngModel)]="estadistica.posicion"></ion-input> -->
+  </ion-item>
+  <ion-item>
+    <ion-label>Equipo:</ion-label>
+    <!-- <ion-input [(ngModel)]="estadistica.equipo"></ion-input> -->
+  </ion-item>
+  <ion-item>
+    <ion-label>Dorsal:</ion-label>
+    <!-- <ion-input [(ngModel)]="estadistica.dorsal"></ion-input> -->
+  </ion-item>
+  <ion-item>
+    <ion-label>Goles Temporada:</ion-label>
+    <!-- <ion-input [(ngModel)]="estadistica.golesTemporada"></ion-input> -->
+  </ion-item>
+  <ion-item>
+    <ion-label>Asistencias:</ion-label>
+    <!-- <ion-input [(ngModel)]="estadistica.asistencias"></ion-input> -->
+  </ion-item>
+  <ion-item>
+    <ion-label>Partidos Jugados:</ion-label>
+    <!-- <ion-input [(ngModel)]="estadistica.partidosJugados"></ion-input> -->
+  </ion-item>
+  <ion-button (click)="clicBotonInsertar()">Añadir Jugador</ion-button>
+  <ion-button (click)="clicBotonBorrar()">Borrar jugador</ion-button>
+  <ion-button (click)="clicBotonModificar()">Modificar jugador</ion-button>
+</ion-content>
