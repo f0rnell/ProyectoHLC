@@ -1,43 +1,42 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Detalle</ion-title>
+    <ion-title>Inserción de datos:</ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-content>
+<ion-content [fullscreen]='true'>
   <ion-item>
-    <ion-label>Nombre: {{documentJugador.data.nombre}}</ion-label>
-    <!-- <ion-input [(ngModel)]="estadistica.nombre"></ion-input> -->
+    <ion-label>Nombre</ion-label>
+    <ion-input [(ngModel)]="documentJugador.data.nombre"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Apellidos: {{documentJugador.data.apellidos}} </ion-label>
-    <!-- <ion-input [(ngModel)]="estadistica.apellidos"></ion-input> -->
+    <ion-label>Apellidos</ion-label>
+    <ion-input [(ngModel)]="documentJugador.data.apellidos"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Posicion: {{documentJugador.data.posicion}}</ion-label>
-    <!-- <ion-input [(ngModel)]="estadistica.posicion"></ion-input> -->
+    <ion-label>Posicion</ion-label>
+    <ion-input [(ngModel)]="documentJugador.data.posicion"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Equipo: {{documentJugador.data.equipo}}</ion-label>
-    <!-- <ion-input [(ngModel)]="estadistica.equipo"></ion-input> -->
+    <ion-label>Equipo</ion-label>
+    <ion-input [(ngModel)]="documentJugador.data.equipo"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Dorsal: {{documentJugador.data.dorsal}}</ion-label>
-    <!-- <ion-input [(ngModel)]="estadistica.dorsal"></ion-input> -->
+    <ion-label>Dorsal</ion-label>
+    <ion-input [(ngModel)]="documentJugador.data.dorsal"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Goles Temporada: {{documentJugador.data.golesTemporada}}</ion-label>
-    <!-- <ion-input [(ngModel)]="estadistica.golesTemporada"></ion-input> -->
+    <ion-label>Goles Temporada</ion-label>
+    <ion-input [(ngModel)]="documentJugador.data.golesTemporada"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Asistencias: {{documentJugador.data.asistencias}}</ion-label>
-    <!-- <ion-input [(ngModel)]="estadistica.asistencias"></ion-input> -->
+    <ion-label>Asistencias</ion-label>
+    <ion-input [(ngModel)]="documentJugador.data.asistencias"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Partidos Jugados: {{documentJugador.data.partidosJugados}}</ion-label>
-    <!-- <ion-input [(ngModel)]="estadistica.partidosJugados"></ion-input> -->
+    <ion-label>Partidos Jugados</ion-label>
+    <ion-input [(ngModel)]="documentJugador.data.partidosJugados"></ion-input>
   </ion-item>
-  <ion-button (click)="clicBotonInsertar()">Añadir Jugador</ion-button>
-  <ion-button (click)="clicBotonBorrar()">Borrar jugador</ion-button>
-  <ion-button (click)="clicBotonModificar()">Modificar jugador</ion-button>
+  <ion-button (click)="clicBotonInsertar()" *ngIf='nuevo'>Añadir Jugador</ion-button>
+  <ion-button (click)="clicBotonBorrar()" *ngIf='!nuevo'>Borrar jugador</ion-button>
+  <ion-button (click)="clicBotonModificar()" *ngIf='!nuevo'>Modificar jugador</ion-button>
 </ion-content>

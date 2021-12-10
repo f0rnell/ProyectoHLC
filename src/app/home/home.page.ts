@@ -21,18 +21,6 @@ export class HomePage {
 
   }
 
-  clicBotonInsertar(){
-    this.firestoreService.insertar("jugador", this.estadistica)
-    .then(() => {
-        console.log("Jugador creado correctamente");
-        //Limpia el contenido del jugador que se estaba editando
-        this.estadistica = {} as Jugador;
-    }, (error) => {
-
-    });
-
-  }
-
   arrayColeccionJugadores: any = [{
     id: "",
     data: {} as Jugador
@@ -66,23 +54,9 @@ export class HomePage {
     this.estadistica.asistencias = jugadorSelec.data.asistencias;
     this.estadistica.partidosJugados = jugadorSelec.data.partidosJugados;
   }
-
-  clicBotonBorrar() {
-    this.firestoreService.borrar("jugador", this.idJugadorSelec).then(() => {
-      // Actualizar la lista completa
-      this.obtenerListaJugadores();
-      // Limpiar datos de pantalla
-      this.estadistica = {} as Jugador;
-    })
-  }
-
-  clicBotonModificar() {
-    this.firestoreService.actualizar("jugador", this.idJugadorSelec, this.estadistica).then(() => {
-      // Actualizar la lista completa
-      this.obtenerListaJugadores();
-      // Limpiar datos de pantalla
-      this.estadistica = {} as Jugador;
-    })
+  
+  nuevoJugador(){
+    this.router.navigate(['/detalle', 'nuevo']);
   }
 
 }
