@@ -25,3 +25,57 @@
 #container a {
   text-decoration: none;
 }
+  ion-card{
+
+    padding: 5%;
+    
+  }
+ 
+  ion-card-content, ion-chip {
+
+   align-items: center;
+   width: 95%;
+   
+  }
+  ion-card-content, ion-label{
+    text-align: center;
+    width: 100%;
+  }
+  ion-card-content ion-icon {
+    font-size: 50px;
+    align-items: center;
+    //margin-left: 25%;
+  }
+  @media screen and (max-width: 992px) {
+    ion-content{
+      --ion-background-color: rgb(30, 124, 116);
+    }
+  }
+  
+  @media screen and (max-width: 450px) {
+    ion-content{
+      --ion-background-color: rgb(255, 238, 0);
+    }
+  }
+  
+  @media screen and (max-width: 250px) {
+    ion-content{
+      --ion-background-color: rgb(206, 65, 9);
+    }
+  }
+  @media screen and (orientation: portrait) {
+    .vertical{
+      
+      display: none;
+  
+    }
+  }
+  @media screen and (orientation: landscape) {
+  
+    .horizontal{
+  
+      display: none;
+  
+    }
+  
+  }

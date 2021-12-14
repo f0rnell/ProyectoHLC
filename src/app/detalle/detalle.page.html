@@ -36,6 +36,10 @@
     <ion-label>Partidos Jugados</ion-label>
     <ion-input [(ngModel)]="documentJugador.data.partidosJugados"></ion-input>
   </ion-item>
+  <ion-item>
+    <ion-label>Foto</ion-label>
+    <ion-input [(ngModel)]="documentJugador.data.partidosJugados"></ion-input>
+  </ion-item>
   <ion-button (click)="clicBotonInsertar()" *ngIf='nuevo'>Añadir Jugador</ion-button>
   <ion-button (click)="clicBotonBorrar()" *ngIf='!nuevo'>Borrar jugador</ion-button>
   <ion-button (click)="clicBotonModificar()" *ngIf='!nuevo'>Modificar jugador</ion-button>

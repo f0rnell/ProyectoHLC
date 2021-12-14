@@ -53,6 +53,7 @@ export class HomePage {
     this.estadistica.golesTemporada = jugadorSelec.data.golesTemporada;
     this.estadistica.asistencias = jugadorSelec.data.asistencias;
     this.estadistica.partidosJugados = jugadorSelec.data.partidosJugados;
+    this.estadistica.foto = jugadorSelec.data.foto;
   }
   
   nuevoJugador(){

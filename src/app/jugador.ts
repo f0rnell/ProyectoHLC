@@ -11,6 +11,7 @@ export interface Jugador {
     golesTemporada: number;
     asistencias: number;
     partidosJugados: number;
+    foto: string;
     
 
 }
