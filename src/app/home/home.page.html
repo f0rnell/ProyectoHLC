@@ -12,6 +12,9 @@
             <ion-col  *ngFor="let documentJugador of arrayColeccionJugadores" size-xl="3" size-lg="2" size-md="4" size-sm="6" size-xs="12">
               <ion-card (click)="selecJugador(documentJugador)">
                 <ion-card-content>
+                  <ion-avatar>
+                    <img src="{{documentJugador.data.foto}}">
+                  </ion-avatar>
                   <ion-chip>
                     <ion-label class="vertical">{{documentJugador.data.nombre}} {{documentJugador.data.apellidos}}</ion-label>
                   </ion-chip>
@@ -19,7 +22,7 @@
                     <p>Posición: {{documentJugador.data.posicion}}</p>
                   </ion-row>
                   <ion-row>
-                    <p>Posición: {{documentJugador.data.equipo}}</p>
+                    <p>Equipo: {{documentJugador.data.equipo}}</p>
                   </ion-row>
                   <ion-row>
                     <p>Dorsal: {{documentJugador.data.dorsal}}</p>

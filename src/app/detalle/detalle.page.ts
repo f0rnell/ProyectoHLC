@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Jugador } from '../jugador';
 import { FirestoreService } from '../firestore.service';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-detalle',
@@ -20,7 +21,8 @@ export class DetallePage implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute, 
     private firestoreService: FirestoreService, 
-    private router : Router
+    private router : Router,
+    private alertController: AlertController
     ) { }
 
   ngOnInit() {
@@ -69,6 +71,32 @@ export class DetallePage implements OnInit {
       this.documentJugador.data = {} as Jugador;
     })
     this.router.navigate(['/home']);
+  }
+  
+  async presentAlertConfirm() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Alerta',
+      message: 'Vas a <strong>borrar</strong> un jugador.<br><br>¿Estas seguro?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Aceptar',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.clicBotonBorrar();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
   
 

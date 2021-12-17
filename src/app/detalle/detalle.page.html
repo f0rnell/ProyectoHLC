@@ -1,6 +1,20 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Inserción de datos:</ion-title>
+    <ion-title>Inserción de datos</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="home" icon="arrow-back-outline"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button color="danger" text="" defaultHref="home" horizontal="end" (click)="presentAlertConfirm()" *ngIf='!nuevo'>
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
+      <ion-button color="success" text="" defaultHref="home" horizontal="end" (click)="clicBotonModificar()" *ngIf='!nuevo'>
+        <ion-icon name="checkmark-outline"></ion-icon>
+      </ion-button>
+      <ion-button color="success" text="" defaultHref="home" horizontal="end" (click)="clicBotonInsertar()" *ngIf='nuevo'>
+        <ion-icon name="checkmark-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]='true'>
@@ -38,9 +52,6 @@
   </ion-item>
   <ion-item>
     <ion-label>Foto</ion-label>
-    <ion-input [(ngModel)]="documentJugador.data.partidosJugados"></ion-input>
+    <ion-input [(ngModel)]="documentJugador.data.foto"></ion-input>
   </ion-item>
-  <ion-button (click)="clicBotonInsertar()" *ngIf='nuevo'>Añadir Jugador</ion-button>
-  <ion-button (click)="clicBotonBorrar()" *ngIf='!nuevo'>Borrar jugador</ion-button>
-  <ion-button (click)="clicBotonModificar()" *ngIf='!nuevo'>Modificar jugador</ion-button>
 </ion-content>
