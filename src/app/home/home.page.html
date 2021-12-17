@@ -22,7 +22,7 @@
                     <p>Posición: {{documentJugador.data.posicion}}</p>
                   </ion-row>
                   <ion-row>
-                    <p>Equipo: {{documentJugador.data.equipo}}</p>
+                    <p>Posición: {{documentJugador.data.equipo}}</p>
                   </ion-row>
                   <ion-row>
                     <p>Dorsal: {{documentJugador.data.dorsal}}</p>
@@ -41,7 +41,7 @@
             </ion-col>
           </ion-row>
       </ion-grid>
-  <ion-fab horizontal="end" color="primary">
+  <ion-fab  color="primary" slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="nuevoJugador()" >
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
