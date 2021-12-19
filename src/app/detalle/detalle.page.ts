@@ -72,7 +72,7 @@ export class DetallePage implements OnInit {
     })
     this.router.navigate(['/home']);
   }
-  
+  //Alerta que se muestra a la hora de eliminar uno de los jugadores.
   async presentAlertConfirm() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
