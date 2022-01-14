@@ -9,13 +9,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment';
 
+import { ImagePicker } from '@awesome-cordova-plugins/image-picker/ngx';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, 
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+    AngularFireModule,AngularFireStorageModule],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+                ImagePicker],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

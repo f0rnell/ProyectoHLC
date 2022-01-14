@@ -51,7 +51,12 @@
     <ion-input [(ngModel)]="documentJugador.data.partidosJugados"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Foto</ion-label>
-    <ion-input [(ngModel)]="documentJugador.data.foto"></ion-input>
+    <ion-label>Subir Foto</ion-label>
+    <ion-button color="success" text="" horizontal="end" (click)="uploadImage()">
+      <ion-icon name="cloud-upload-outline"></ion-icon>
+    </ion-button>
+  </ion-item>
+  <ion-item>
+    <img src="{{documentJugador.data.foto}}" *ngIf="documentJugador.data.foto" width="100" height="100" >
   </ion-item>
 </ion-content>

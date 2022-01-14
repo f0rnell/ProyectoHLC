@@ -3,7 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Jugador } from '../jugador';
 import { FirestoreService } from '../firestore.service';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController } from '@ionic/angular';
+import { ImagePicker, OutputType } from '@awesome-cordova-plugins/image-picker/ngx';
 
 @Component({
   selector: 'app-detalle',
@@ -22,7 +23,10 @@ export class DetallePage implements OnInit {
     private activatedRoute: ActivatedRoute, 
     private firestoreService: FirestoreService, 
     private router : Router,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private loadingController: LoadingController,
+    private toastController: ToastController,
+    private imagePicker: ImagePicker
     ) { }
 
   ngOnInit() {
@@ -99,5 +103,82 @@ export class DetallePage implements OnInit {
     await alert.present();
   }
   
+  async uploadImagePicker(){
+
+    //Mensaje de espera mientras se sube la imagen
+    const loading = await this.loadingController.create({
+      message: 'Por favor espere...'
+    });
+
+    //Mensaje de finalización de subida de la imagen
+    const toast = await this.toastController.create({
+      message: 'La imagen se subio correctamente',
+      duration: 3000
+    });
+
+    //Comprobar si la aplicacón tiene permisos de lectura
+    this.imagePicker.hasReadPermission().then(
+      (result) => {
+        // Si no tiene permiso de lectura se solicita al usuario
+        if(result == false){
+          this.imagePicker.requestReadPermission();
+        }else{
+          //Abrir selecto de imágenes (ImagePicker)
+          this.imagePicker.getPictures({
+            maximumImagesCount:1, //Permitir solo 1 imagen
+            outputType: 1
+          }).then(
+            (result) => {//En la variable results se tiene las imágenes seleccionadas
+              
+              //Carpeta del Storage donde se alamacenará la imagen
+              let nombreCarpeta = "imagenes";
+              //Recorrer todas las imágenes que haya seleccionado el usuario
+              //aunque realmente sólo será 1 como se ha indicado en las opciones
+              for (var i = 0; i < result.lenght; i++){
+                //Mostar el mensaje de espera
+                loading.present();
+                //Asignar el nombre de la imagen en función de la hora actuala para
+                //evitar duplicidades de nombres
+                let nombreImagen = `${new Date().getTime()}`;
+                //Llamar al método que sube la imagen al Storage
+                this.firestoreService.uploadImage(nombreCarpeta,nombreImagen,result[i])
+                  .then(snapshot => {
+                    snapshot.ref.getDownloadURL()
+                      .then(downloadURL => {
+                        //En la varaible downloadURl se tiene la dirección de
+                        // descarga de la imagen
+                        console.log("downloadURL:" + downloadURL);
+                        this.documentJugador.data.foto = downloadURL;
+                        //Mostar el mensaje de finalización de la subida
+                        toast.present();
+                        //Ocultar mensaje de espera
+                        loading.dismiss();
+                      })
+                  })
+
+              }
+            },
+            (err) => {
+              console.log(err)
+            }
+          );
+        }
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
+  async deleteFile(fileURL){
+    const toast = await this.toastController.create({
+      message: 'La imagen a sido eliminado correctamente',
+      duration: 3000
+    });
+    this.firestoreService.deleteFileFromURL(fileURL)
+      .then(() =>{
+        toast.present();
+      }, (err) => {
+        console.log(err);
+      });
+  }
 
 }
