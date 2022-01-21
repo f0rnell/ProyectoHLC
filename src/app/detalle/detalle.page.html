@@ -52,11 +52,14 @@
   </ion-item>
   <ion-item>
     <ion-label>Subir Foto</ion-label>
-    <ion-button color="success" text="" horizontal="end" (click)="uploadImage()">
+    <ion-button color="danger" text="" horizontal="end" (click)="deleteFile()">
+      <ion-icon name="close-circle-outline"></ion-icon>
+    </ion-button>
+    <ion-button color="success" text="" horizontal="end" (click)="uploadImagePicker()">
       <ion-icon name="cloud-upload-outline"></ion-icon>
     </ion-button>
   </ion-item>
   <ion-item>
-    <img src="{{documentJugador.data.foto}}" *ngIf="documentJugador.data.foto" width="100" height="100" >
+    <img src="{{documentJugador.data.foto}}" *ngIf="documentJugador.data.foto" width="100" >
   </ion-item>
 </ion-content>

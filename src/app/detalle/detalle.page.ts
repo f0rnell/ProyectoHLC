@@ -4,7 +4,8 @@ import { Jugador } from '../jugador';
 import { FirestoreService } from '../firestore.service';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
-import { ImagePicker, OutputType } from '@awesome-cordova-plugins/image-picker/ngx';
+import { ImagePicker} from '@awesome-cordova-plugins/image-picker/ngx';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-detalle',
@@ -26,8 +27,9 @@ export class DetallePage implements OnInit {
     private alertController: AlertController,
     private loadingController: LoadingController,
     private toastController: ToastController,
-    private imagePicker: ImagePicker
-    ) { }
+    private imagePicker: ImagePicker,
+    private platform: Platform
+    ) {}
 
   ngOnInit() {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -45,6 +47,15 @@ export class DetallePage implements OnInit {
           // No se ha encontrado un document con ese ID. Vaciar los datos que hubiera
           this.documentJugador.data = {} as Jugador;
         } 
+      });
+      this.platform.backButton.subscribeWithPriority(5, () => {
+        if(this.id == 'nuevo'){
+          this.deleteFile();
+        }else if(this.documentJugador.data.foto == ''){
+          // Cacao gordo, necesito comprobar si ya habia foto, si ha cambiado 
+          // todo esto es para cuando le den en el boton de back 
+        }
+        this.router.navigate(['/home']);
       });
     }
   }
@@ -66,6 +77,7 @@ export class DetallePage implements OnInit {
       // Limpiar datos de pantalla
       this.documentJugador.data = {} as Jugador;
       this.router.navigate(['/home']);
+      this.deleteFile();
     })
   }
 
@@ -124,30 +136,34 @@ export class DetallePage implements OnInit {
           this.imagePicker.requestReadPermission();
         }else{
           //Abrir selecto de imágenes (ImagePicker)
+          console.log("imagenes selecionadas");
           this.imagePicker.getPictures({
-            maximumImagesCount:1, //Permitir solo 1 imagen
+            maximumImagesCount: 1, //Permitir solo 1 imagen
             outputType: 1
           }).then(
-            (result) => {//En la variable results se tiene las imágenes seleccionadas
+            
+            (results) => {//En la variable results se tiene las imágenes seleccionadas
               
               //Carpeta del Storage donde se alamacenará la imagen
               let nombreCarpeta = "imagenes";
               //Recorrer todas las imágenes que haya seleccionado el usuario
-              //aunque realmente sólo será 1 como se ha indicado en las opciones
-              for (var i = 0; i < result.lenght; i++){
+              //aunque realmente sólo será 1 como se ha indicado en las opciones 
+              for (var i = 0; i < results.length; i++){
                 //Mostar el mensaje de espera
                 loading.present();
                 //Asignar el nombre de la imagen en función de la hora actuala para
                 //evitar duplicidades de nombres
                 let nombreImagen = `${new Date().getTime()}`;
                 //Llamar al método que sube la imagen al Storage
-                this.firestoreService.uploadImage(nombreCarpeta,nombreImagen,result[i])
+                console.log("Va a subir la imagen");
+                this.firestoreService.uploadImage(nombreCarpeta,nombreImagen,results[i])
                   .then(snapshot => {
                     snapshot.ref.getDownloadURL()
                       .then(downloadURL => {
                         //En la varaible downloadURl se tiene la dirección de
                         // descarga de la imagen
                         console.log("downloadURL:" + downloadURL);
+                        //this.deleteFile();
                         this.documentJugador.data.foto = downloadURL;
                         //Mostar el mensaje de finalización de la subida
                         toast.present();
@@ -168,14 +184,15 @@ export class DetallePage implements OnInit {
       });
   }
 
-  async deleteFile(fileURL){
+  async deleteFile(){
     const toast = await this.toastController.create({
       message: 'La imagen a sido eliminado correctamente',
       duration: 3000
     });
-    this.firestoreService.deleteFileFromURL(fileURL)
+    this.firestoreService.deleteFileFromURL(this.documentJugador.data.foto)
       .then(() =>{
         toast.present();
+        this.documentJugador.data.foto = null;
       }, (err) => {
         console.log(err);
       });
