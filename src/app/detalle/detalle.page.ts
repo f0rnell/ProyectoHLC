@@ -16,6 +16,7 @@ export class DetallePage implements OnInit {
 
   id: string = "";
   nuevo: boolean = false;
+  imagenActual: string = "";
   documentJugador: any = {
     id: "",
     data: {} as Jugador
@@ -41,13 +42,21 @@ export class DetallePage implements OnInit {
         if(resultado.payload.data() != null) {
           this.documentJugador.id = resultado.payload.id
           this.documentJugador.data = resultado.payload.data();
+          
           // Como ejemplo, mostrar el título de la tarea en consola
           console.log(this.documentJugador.data.nombre);
+
+          
         } else {
           // No se ha encontrado un document con ese ID. Vaciar los datos que hubiera
           this.documentJugador.data = {} as Jugador;
         } 
+
+        
       });
+      //Mostrar foto de la base de datos
+      this.imagenActual = this.documentJugador.data.foto;
+      
       this.platform.backButton.subscribeWithPriority(5, () => {
         if(this.id == 'nuevo'){
           this.deleteFile();
@@ -60,6 +69,7 @@ export class DetallePage implements OnInit {
     }
   }
   clicBotonInsertar(){
+    this.uploadImagen();
     this.firestoreService.insertar("jugador", this.documentJugador.data)
     .then(() => {
         console.log("Jugador creado correctamente");
@@ -115,19 +125,7 @@ export class DetallePage implements OnInit {
     await alert.present();
   }
   
-  async uploadImagePicker(){
-
-    //Mensaje de espera mientras se sube la imagen
-    const loading = await this.loadingController.create({
-      message: 'Por favor espere...'
-    });
-
-    //Mensaje de finalización de subida de la imagen
-    const toast = await this.toastController.create({
-      message: 'La imagen se subio correctamente',
-      duration: 3000
-    });
-
+  async selecImage(){
     //Comprobar si la aplicacón tiene permisos de lectura
     this.imagePicker.hasReadPermission().then(
       (result) => {
@@ -141,39 +139,9 @@ export class DetallePage implements OnInit {
             maximumImagesCount: 1, //Permitir solo 1 imagen
             outputType: 1
           }).then(
-            
             (results) => {//En la variable results se tiene las imágenes seleccionadas
-              
-              //Carpeta del Storage donde se alamacenará la imagen
-              let nombreCarpeta = "imagenes";
-              //Recorrer todas las imágenes que haya seleccionado el usuario
-              //aunque realmente sólo será 1 como se ha indicado en las opciones 
-              for (var i = 0; i < results.length; i++){
-                //Mostar el mensaje de espera
-                loading.present();
-                //Asignar el nombre de la imagen en función de la hora actuala para
-                //evitar duplicidades de nombres
-                let nombreImagen = `${new Date().getTime()}`;
-                //Llamar al método que sube la imagen al Storage
-                console.log("Va a subir la imagen");
-                this.firestoreService.uploadImage(nombreCarpeta,nombreImagen,results[i])
-                  .then(snapshot => {
-                    snapshot.ref.getDownloadURL()
-                      .then(downloadURL => {
-                        //En la varaible downloadURl se tiene la dirección de
-                        // descarga de la imagen
-                        console.log("downloadURL:" + downloadURL);
-                        //this.deleteFile();
-                        this.documentJugador.data.foto = downloadURL;
-                        //Mostar el mensaje de finalización de la subida
-                        toast.present();
-                        //Ocultar mensaje de espera
-                        loading.dismiss();
-                      })
-                  })
-
-              }
-            },
+                          this.imagenActual = results[0];
+                        },
             (err) => {
               console.log(err)
             }
@@ -181,6 +149,48 @@ export class DetallePage implements OnInit {
         }
       }, (err) => {
         console.log(err);
+      });
+  }
+
+  async uploadImagen(){
+
+    //Mensaje de espera mientras se sube la imagen
+    const loading = await this.loadingController.create({
+      message: 'Por favor espere...'
+    });
+
+    //Mensaje de finalización de subida de la imagen
+    const toast = await this.toastController.create({
+      message: 'La imagen se subio correctamente',
+      duration: 3000
+    });
+
+    //Carpeta del Storage donde se alamacenará la imagen
+    let nombreCarpeta = "imagenes";
+    //Recorrer todas las imágenes que haya seleccionado el usuario
+    //aunque realmente sólo será 1 como se ha indicado en las opciones 
+    
+    //Mostar el mensaje de espera
+    loading.present();
+    //Asignar el nombre de la imagen en función de la hora actuala para
+    //evitar duplicidades de nombres
+    let nombreImagen = `${new Date().getTime()}`;
+    //Llamar al método que sube la imagen al Storage
+    console.log("Va a subir la imagen");
+    this.firestoreService.uploadImage(nombreCarpeta,nombreImagen,this.imagenActual)
+      .then(snapshot => {
+        snapshot.ref.getDownloadURL()
+          .then(downloadURL => {
+            //En la varaible downloadURl se tiene la dirección de
+            // descarga de la imagen
+            console.log("downloadURL:" + downloadURL);
+            //this.deleteFile();
+            this.documentJugador.data.foto = downloadURL;
+            //Mostar el mensaje de finalización de la subida
+            toast.present();
+            //Ocultar mensaje de espera
+            loading.dismiss();
+          })
       });
   }
 
