@@ -5,7 +5,7 @@ import { FirestoreService } from '../firestore.service';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { ImagePicker} from '@awesome-cordova-plugins/image-picker/ngx';
-import { Platform } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-detalle',
@@ -17,6 +17,10 @@ export class DetallePage implements OnInit {
   id: string = "";
   nuevo: boolean = false;
   imagenActual: string = "";
+  subirArchivoImagen: boolean = false;
+  borrarArchivoImagen: boolean = false;
+  // Nombre de la colección en Firestore Database
+  coleccion: String = "EjemploImagenes";
   documentJugador: any = {
     id: "",
     data: {} as Jugador
@@ -29,7 +33,7 @@ export class DetallePage implements OnInit {
     private loadingController: LoadingController,
     private toastController: ToastController,
     private imagePicker: ImagePicker,
-    private platform: Platform
+    
     ) {}
 
   ngOnInit() {
@@ -57,15 +61,6 @@ export class DetallePage implements OnInit {
       //Mostrar foto de la base de datos
       this.imagenActual = this.documentJugador.data.foto;
       
-      this.platform.backButton.subscribeWithPriority(5, () => {
-        if(this.id == 'nuevo'){
-          this.deleteFile();
-        }else if(this.documentJugador.data.foto == ''){
-          // Cacao gordo, necesito comprobar si ya habia foto, si ha cambiado 
-          // todo esto es para cuando le den en el boton de back 
-        }
-        this.router.navigate(['/home']);
-      });
     }
   }
   clicBotonInsertar(){
@@ -85,9 +80,10 @@ export class DetallePage implements OnInit {
   clicBotonBorrar() {
     this.firestoreService.borrar("jugador", this.id).then(() => {
       // Limpiar datos de pantalla
+      this.deleteFile();
       this.documentJugador.data = {} as Jugador;
       this.router.navigate(['/home']);
-      this.deleteFile();
+      
     })
   }
 
@@ -140,7 +136,10 @@ export class DetallePage implements OnInit {
             outputType: 1
           }).then(
             (results) => {//En la variable results se tiene las imágenes seleccionadas
-                          this.imagenActual = results[0];
+                          this.imagenActual = "data:image/jpeg;base64," + results[0];
+                          // Se informa que se ha cambiado para que se suba la imagen cuando se actualice la BD
+                          this.subirArchivoImagen = true;
+                          this.borrarArchivoImagen = false;
                         },
             (err) => {
               console.log(err)
@@ -150,6 +149,27 @@ export class DetallePage implements OnInit {
       }, (err) => {
         console.log(err);
       });
+  }
+  public guardarDatos() {
+    if(this.subirArchivoImagen) {
+      console.log("subir archivo");
+      // Borrar el archivo de la imagen antigua si la hubiera
+      if(this.documentJugador.data.foto != null) {
+        console.log("eliminar imagen antigua");
+        this.deleteFile();        
+      }
+      // Si la imagen es nueva se sube como archivo y se actualiza la BD
+      this.uploadImagen();
+    } else {
+      if(this.borrarArchivoImagen) {
+        console.log("eliminar imagen y limpiar variable");
+        this.deleteFile();      
+        this.documentJugador.data.foto = null;
+      }
+      // Si no ha cambiado la imagen no se sube como archivo, sólo se actualiza la BD
+      console.log("actualizar base de datos");
+      this.actualizarBaseDatos();
+    }
   }
 
   async uploadImagen(){
@@ -186,6 +206,11 @@ export class DetallePage implements OnInit {
             console.log("downloadURL:" + downloadURL);
             //this.deleteFile();
             this.documentJugador.data.foto = downloadURL;
+            console.log(this.id);
+            if(this.id == '!nuevo'){
+              console.log("entra cuando es nuevo");
+              this.actualizarBaseDatos();
+            }
             //Mostar el mensaje de finalización de la subida
             toast.present();
             //Ocultar mensaje de espera
@@ -193,12 +218,31 @@ export class DetallePage implements OnInit {
           })
       });
   }
+  private actualizarBaseDatos() {    
+    console.log("Guardando en la BD: ");
+    console.log(this.documentJugador.data);
+    console.log("anntes de actualizar");
+    this.firestoreService.actualizar(this.coleccion, this.documentJugador.id, this.documentJugador.data);
+    console.log("despues de actualizar");
+    
+  }
+
+  public borrarImagen() {
+    console.log("inicio borrar imagen");
+    // No mostrar ninguna imagen en la página
+    this.imagenActual = null;
+    // Se informa que no se debe subir ninguna imagen cuando se actualice la BD
+    this.subirArchivoImagen = false;
+    this.borrarArchivoImagen = true;
+    console.log("final borrar imagen");
+  }
 
   async deleteFile(){
     const toast = await this.toastController.create({
       message: 'La imagen a sido eliminado correctamente',
       duration: 3000
     });
+    console.log("deletefile"+this.documentJugador.data.foto);
     this.firestoreService.deleteFileFromURL(this.documentJugador.data.foto)
       .then(() =>{
         toast.present();
@@ -209,3 +253,4 @@ export class DetallePage implements OnInit {
   }
 
 }
+

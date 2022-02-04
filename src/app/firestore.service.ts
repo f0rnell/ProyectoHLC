@@ -22,6 +22,9 @@ export class FirestoreService {
     return this.angularFirestore.collection(coleccion).doc(documentId).delete();
   }
   public actualizar(coleccion, documentId, datos) {
+    console.log(coleccion);
+    console.log(documentId);
+    console.log(datos);
     return this.angularFirestore.collection(coleccion).doc(documentId).set(datos);
   }
   public consultarPorId(coleccion, documentId) {
@@ -30,7 +33,7 @@ export class FirestoreService {
 
   public uploadImage (nombreCarpeta, nombreArchivo, imagenBase64){
     let storageRef= this.angularFireStorage.ref(nombreCarpeta).child(nombreArchivo);
-    return storageRef.putString("data:image/jpeg;base64," + imagenBase64, 'data_url');
+    return storageRef.putString(imagenBase64, 'data_url');
   }
 
   public deleteFileFromURL(fileURL){
