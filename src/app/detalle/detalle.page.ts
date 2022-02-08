@@ -65,21 +65,15 @@ export class DetallePage implements OnInit {
   }
   clicBotonInsertar(){
     this.uploadImagen();
-    this.firestoreService.insertar("jugador", this.documentJugador.data)
-    .then(() => {
-        console.log("Jugador creado correctamente");
-        //Limpia el contenido del jugador que se estaba editando
-        this.documentJugador.data = {} as Jugador;
-    }, (error) => {
-
-    });
     this.router.navigate(['/home']);
 
   }
 
   clicBotonBorrar() {
+    console.log(this.documentJugador.data.foto);
     this.firestoreService.borrar("jugador", this.id).then(() => {
       // Limpiar datos de pantalla
+      console.log(this.documentJugador.data.foto);
       this.deleteFile();
       this.documentJugador.data = {} as Jugador;
       this.router.navigate(['/home']);
@@ -210,6 +204,13 @@ export class DetallePage implements OnInit {
             if(this.id == '!nuevo'){
               console.log("entra cuando es nuevo");
               this.actualizarBaseDatos();
+            }else{
+              this.firestoreService.insertar("jugador", this.documentJugador.data)
+              .then(() => {
+                  console.log("Jugador creado correctamente");
+                  //Limpia el contenido del jugador que se estaba editando
+                  this.documentJugador.data = {} as Jugador;
+              }, (error) => {});
             }
             //Mostar el mensaje de finalización de la subida
             toast.present();
