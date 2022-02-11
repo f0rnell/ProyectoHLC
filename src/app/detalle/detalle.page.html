@@ -8,8 +8,11 @@
       <ion-button color="danger" text="" defaultHref="home" horizontal="end" (click)="presentAlertConfirm()" *ngIf='!nuevo'>
         <ion-icon name="trash-outline"></ion-icon>
       </ion-button>
-      <ion-button color="success" text="" defaultHref="home" horizontal="end" (click)="clicBotonModificar()" *ngIf='!nuevo'>
+      <ion-button color="success" text="" defaultHref="home" horizontal="end" (click)="guardarDatos()" *ngIf='!nuevo'>
         <ion-icon name="checkmark-outline"></ion-icon>
+      </ion-button>
+      <ion-button color="success" text="" defaultHref="home" horizontal="end" (click)="clicBotonCompartir()" *ngIf='!nuevo'>
+        <ion-icon name="share-social-outline"></ion-icon>
       </ion-button>
       <ion-button color="success" text="" defaultHref="home" horizontal="end" (click)="clicBotonInsertar()" *ngIf='nuevo'>
         <ion-icon name="checkmark-outline"></ion-icon>

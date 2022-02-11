@@ -5,7 +5,7 @@ import { FirestoreService } from '../firestore.service';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { ImagePicker} from '@awesome-cordova-plugins/image-picker/ngx';
-
+import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 
 @Component({
   selector: 'app-detalle',
@@ -33,6 +33,7 @@ export class DetallePage implements OnInit {
     private loadingController: LoadingController,
     private toastController: ToastController,
     private imagePicker: ImagePicker,
+    private socialSharing: SocialSharing,
     
     ) {}
 
@@ -63,6 +64,15 @@ export class DetallePage implements OnInit {
       
     }
   }
+
+  clicBotonCompartir(){
+    // Check if sharing via email is supported
+    this.socialSharing.share(this.documentJugador.data.nombre,'adios').then(() => {
+      // Sharing via email is possible
+    }).catch(() => {
+      // Sharing via email is not possible
+    });
+  }
   clicBotonInsertar(){
     this.uploadImagen();
     this.router.navigate(['/home']);
@@ -71,10 +81,13 @@ export class DetallePage implements OnInit {
 
   clicBotonBorrar() {
     console.log(this.documentJugador.data.foto);
+    this.deleteFile();
     this.firestoreService.borrar("jugador", this.id).then(() => {
       // Limpiar datos de pantalla
       console.log(this.documentJugador.data.foto);
-      this.deleteFile();
+      //Tengo que sacar de aqui el delete por que elimina la foto despues del jugador entonces se 
+      //queda siempre en la bd por que no sabe que url tiene que borrar, tengo que sacarlo antes del 
+      // --- > this.firestoreService.borrar
       this.documentJugador.data = {} as Jugador;
       this.router.navigate(['/home']);
       
@@ -82,11 +95,8 @@ export class DetallePage implements OnInit {
   }
 
   clicBotonModificar() {
-    this.firestoreService.actualizar("jugador", this.id, this.documentJugador.data).then(() => {
-      // Limpiar datos de pantalla
-      this.documentJugador.data = {} as Jugador;
-    })
-    this.router.navigate(['/home']);
+    
+    //this.router.navigate(['/home']);
   }
   //Alerta que se muestra a la hora de eliminar uno de los jugadores.
   async presentAlertConfirm() {
@@ -163,7 +173,10 @@ export class DetallePage implements OnInit {
       // Si no ha cambiado la imagen no se sube como archivo, sólo se actualiza la BD
       console.log("actualizar base de datos");
       this.actualizarBaseDatos();
+      
     }
+    console.log("redirige a home")
+    this.router.navigate(['/home']);
   }
 
   async uploadImagen(){
@@ -201,8 +214,8 @@ export class DetallePage implements OnInit {
             //this.deleteFile();
             this.documentJugador.data.foto = downloadURL;
             console.log(this.id);
-            if(this.id == '!nuevo'){
-              console.log("entra cuando es nuevo");
+            if(!this.nuevo){
+              console.log("entra cuando no es nuevo");
               this.actualizarBaseDatos();
             }else{
               this.firestoreService.insertar("jugador", this.documentJugador.data)
@@ -220,12 +233,10 @@ export class DetallePage implements OnInit {
       });
   }
   private actualizarBaseDatos() {    
-    console.log("Guardando en la BD: ");
-    console.log(this.documentJugador.data);
-    console.log("anntes de actualizar");
-    this.firestoreService.actualizar(this.coleccion, this.documentJugador.id, this.documentJugador.data);
-    console.log("despues de actualizar");
-    
+    this.firestoreService.actualizar("jugador", this.id, this.documentJugador.data).then(() => {
+      // Limpiar datos de pantalla
+      this.documentJugador.data = {} as Jugador;
+    })
   }
 
   public borrarImagen() {
