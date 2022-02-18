@@ -5,5 +5,47 @@
 </ion-header>
 
 <ion-content>
-  <ion-label>Prueba</ion-label>
+  
+  <div>
+    <h1>Aplicacion: Estadisticas Jugadores</h1>
+    <table id="customers">
+      <thead>
+        <tr>
+          <th>Creador</th>
+          <th>Lugar</th>
+          <th>Historia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td scope="row">Jose Antonio Fornell Márquez</td>
+          <td>Zahara</td>
+          <td>Aplicación creada para la asignatura de HLC, en el grado superior de DAW</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <ion-fab  slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="llamar()" color="success">
+      <ion-icon name="call-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
 </ion-content>
+<ion-toolbar>
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+
+      <ion-tab-button tab="home">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Inicio</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="mapa">
+        <ion-icon name="navigate-outline"></ion-icon>
+        <ion-label>Mapa</ion-label>
+      </ion-tab-button>
+
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-toolbar>
