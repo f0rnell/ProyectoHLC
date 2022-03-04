@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { ImagePicker} from '@awesome-cordova-plugins/image-picker/ngx';
 import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-detalle',
@@ -19,6 +20,9 @@ export class DetallePage implements OnInit {
   imagenActual: string = "";
   subirArchivoImagen: boolean = false;
   borrarArchivoImagen: boolean = false;
+  userEmail: String = "";
+  userUID: String = "";
+  isLogged: boolean;
   // Nombre de la colección en Firestore Database
   coleccion: String = "EjemploImagenes";
   documentJugador: any = {
@@ -34,8 +38,11 @@ export class DetallePage implements OnInit {
     private toastController: ToastController,
     private imagePicker: ImagePicker,
     private socialSharing: SocialSharing,
+    public afAuth: AngularFireAuth
     
-    ) {}
+    ) {
+      
+    }
 
   ngOnInit() {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -63,6 +70,19 @@ export class DetallePage implements OnInit {
       this.imagenActual = this.documentJugador.data.foto;
       
     }
+  }
+
+  ionViewDidEnter() {
+    this.isLogged = false;
+    this.afAuth.user.subscribe(user => {
+      if(user){
+        this.userEmail = user.email;
+        this.userUID = user.uid;
+        this.isLogged = true;
+      }else{
+        this.router.navigate(['/home']);
+      }
+    })
   }
 
   clicBotonCompartir(){

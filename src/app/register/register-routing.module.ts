@@ -7,6 +7,14 @@ const routes: Routes = [
   {
     path: '',
     component: RegisterPage
+  },
+  {
+    path: 'info',
+    redirectTo: '/info'
+  },
+  {
+    path: 'home',
+    redirectTo: '/home'
   }
 ];
 

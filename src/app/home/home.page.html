@@ -1,5 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button color="success" text="" defaultHref="home" horizontal="end" (click)="login()">
+        <ion-icon name="log-in-outline"></ion-icon>
+      </ion-button>
+      <ion-button color="danger" text="" defaultHref="home" horizontal="end" (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title>
       Estadisticas de los jugadores
     </ion-title>
@@ -42,12 +50,11 @@
           </ion-row>
       </ion-grid>
   <ion-fab  color="primary" slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button (click)="nuevoJugador()" >
+    <ion-fab-button (click)="nuevoJugador()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
   </ion-content>
-
 <ion-toolbar>
   <ion-tabs>
     <ion-tab-bar slot="bottom">

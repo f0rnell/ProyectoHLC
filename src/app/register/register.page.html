@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>register</ion-title>
+    <ion-title>Registrar</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -20,7 +20,7 @@
     </div>
 
     <ion-item>
-      <ion-label position="floating" color="primary">Password</ion-label>
+      <ion-label position="floating" color="primary">Contraseña</ion-label>
       <ion-input type="password" formControlName="password"></ion-input>
     </ion-item>
     <div class="validation-errors">
@@ -31,10 +31,27 @@
       </ng-container>
     </div>
 
-    <ion-button class="submit-btn" expand="block" type="submit" [disabled]="!validations_form.valid">Register</ion-button>
+    <ion-button class="submit-btn" expand="block" type="submit" [disabled]="!validations_form.valid">Registro</ion-button>
     <label class="error-message">{{errorMessage}}</label>
     <label class="success-message">{{successMessage}}</label>
   </form>
-  <p class="go-to-login">Already have an account? <a (click)="goLoginPage()">Try to Log In.</a></p>
+  <p class="go-to-login">¿Ya tienes una cuenta? <a (click)="goLoginPage()">Logearse</a></p>
 
 </ion-content>
+<ion-toolbar>
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+
+      <ion-tab-button tab="home">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Inicio</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button tab="info">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        <ion-label>Info</ion-label>
+      </ion-tab-button>
+
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-toolbar>

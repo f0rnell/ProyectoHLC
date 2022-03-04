@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 import { FirestoreService } from '../firestore.service';
 import { Jugador } from '../jugador';
+import { AuthService } from '../services/auth.service';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+
 
 @Component({
   selector: 'app-home',
@@ -11,9 +15,19 @@ import { Router } from '@angular/router';
 export class HomePage {
 
   estadistica: Jugador;
+  userEmail: String = "";
+  userUID: String = "";
+  isLogged: boolean;
 
-  constructor(private firestoreService: FirestoreService, private router : Router) {
-
+  constructor(
+    private firestoreService: FirestoreService, 
+    public loadingCtrl: LoadingController,
+    private authService: AuthService,
+    private router: Router,
+    public afAuth: AngularFireAuth,
+    private alertController: AlertController
+    ) {
+    
     //Crear una jugador vacía al empezar
     this.estadistica = {} as Jugador;
     this.obtenerListaJugadores();
@@ -40,7 +54,8 @@ export class HomePage {
 
   idJugadorSelec: string;
 
-  selecJugador(jugadorSelec) {
+  async selecJugador(jugadorSelec) {
+    if(this.isLogged){
     console.log("Jugador seleccionado: ");
     console.log(jugadorSelec);
     this.idJugadorSelec = jugadorSelec.id;
@@ -54,10 +69,61 @@ export class HomePage {
     this.estadistica.asistencias = jugadorSelec.data.asistencias;
     this.estadistica.partidosJugados = jugadorSelec.data.partidosJugados;
     this.estadistica.foto = jugadorSelec.data.foto;
+    }else{
+      
+      const alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: 'Alerta',
+        subHeader: 'Logeo',
+        message: 'Tiene que estar logeado para acceder',
+        buttons: ['OK']
+      });
+    
+      await alert.present();
+    }
+    
   }
   
-  nuevoJugador(){
+  async nuevoJugador(){
+    if(this.isLogged){
     this.router.navigate(['/detalle', 'nuevo']);
+    }else{
+      
+      const alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: 'Alerta',
+        subHeader: 'Logeo',
+        message: 'Tiene que estar logeado para acceder',
+        buttons: ['OK']
+      });
+    
+      await alert.present();
+    }
+  }
+
+  ionViewDidEnter() {
+    this.isLogged = false;
+    this.afAuth.user.subscribe(user => {
+      if(user){
+        this.userEmail = user.email;
+        this.userUID = user.uid;
+        this.isLogged = true;
+      }
+    })
+  }
+
+  login() {
+    this.router.navigate(["/login"]);
+  }
+
+  logout(){
+    this.authService.doLogout()
+    .then(res => {
+      this.userEmail = "";
+      this.userUID = "";
+      this.isLogged = false;
+      console.log(this.userEmail);
+    }, err => console.log(err));
   }
 
 }
