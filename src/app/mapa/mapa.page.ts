@@ -26,37 +26,35 @@ export class MapaPage implements OnInit {
   }
 
   loadMap() {
-    let latitud = 36.84022819646473;
-    let longitud = -5.391387011548766;
-    let zoom = 17;
-    this.map = L.map("mapId").setView([latitud, longitud], zoom);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
-        .addTo(this.map);
     
-        // this.map.eachLayer((layer) => {
-        //   if (!(layer instanceof L.TileLayer)) {
-        //       this.map.removeLayer(layer);
-        //   }
-        // });
-    
-        this.map.locate({ setView: true }).on("locationfound", (event: any) => {
+        this.map = L.map("mapId");
+        this.map.locate({ setView: true, maxZoom: 16}).on("locationfound", (event: any) => {
+
           this.latitudActual = event.latitude;
           this.longitudActual = event.longitude;
-          this.locationMarker = L.marker([event.latitude, event.longitude], {
-              draggable: true
+
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+              .addTo(this.map);
+          
+          L.Routing.control({
+            waypoints: [
+                L.latLng(36.84022819646473, -5.391387011548766),
+                L.latLng(this.latitudActual, this.longitudActual)
+            ],
+            lineOptions: {
+              styles: [{color: 'green', opacity: 1, weight: 5}]
+            },
+            summaryTemplate: '',
           }).addTo(this.map);
-    
-      
-          this.locationMarker.bindPopup("Estas aquí!").openPopup();
-        });    
-    
-    L.Routing.control({
-        waypoints: [
-            L.latLng(36.84022819646473, -5.391387011548766),
-            L.latLng(this.latitudActual, this.longitudActual)
-        ]
-    }).addTo(this.map);
-      
+
+
+          L.marker([this.latitudActual, this.longitudActual],{title: 'Usted', draggable: false})
+          .addTo(this.map).bindPopup('<b>Usted</b><br>Se encuentra aqui').openPopup();
+
+          L.marker([36.84022819646473, -5.391387011548766],{title: 'Empresa', draggable: false})
+          .addTo(this.map).bindPopup('<b>Empresa</b><br>Calle de la empresa').openPopup();
+
+        });      
   }
 
   // clearMap(){
