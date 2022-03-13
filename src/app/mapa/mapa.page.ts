@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
 //import * as L from 'leaflet';
 const L = require('leaflet');
 const Routing = require('leaflet-routing-machine');

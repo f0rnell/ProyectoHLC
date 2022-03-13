@@ -13,6 +13,7 @@ import { ImagePicker } from '@awesome-cordova-plugins/image-picker/ngx';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
+import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +25,7 @@ import { CallNumber } from '@awesome-cordova-plugins/call-number/ngx';
                 ImagePicker,
                 SocialSharing,
                 CallNumber,
+                Geolocation
 
               ],
   bootstrap: [AppComponent],

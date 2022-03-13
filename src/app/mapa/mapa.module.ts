@@ -8,12 +8,14 @@ import { MapaPageRoutingModule } from './mapa-routing.module';
 
 import { MapaPage } from './mapa.page';
 
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MapaPageRoutingModule
+    MapaPageRoutingModule,
+    
   ],
   declarations: [MapaPage]
 })
