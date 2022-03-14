@@ -17,7 +17,8 @@ export class MapaPage implements OnInit {
   travelList: any;
   latitudActual: any;
   longitudActual: any;
-  constructor() { }
+  
+  constructor(private geolocation: Geolocation) { }
 
   ngOnInit() {
   }
@@ -29,33 +30,39 @@ export class MapaPage implements OnInit {
   loadMap() {
     
         this.map = L.map("mapId");
-        this.map.locate({ setView: true, maxZoom: 16}).on("locationfound", (event: any) => {
+        this.geolocation.getCurrentPosition().then((resp) => {
+          this.latitudActual = resp.coords.latitude;
+          this.longitudActual = resp.coords.longitude;
+          //this.map.locate({ setView: true, maxZoom: 16}).on("locationfound", (event: any) => {
 
-          this.latitudActual = event.latitude;
-          this.longitudActual = event.longitude;
-
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
-              .addTo(this.map);
-          
-          L.Routing.control({
-            waypoints: [
-                L.latLng(36.84022819646473, -5.391387011548766),
-                L.latLng(this.latitudActual, this.longitudActual)
-            ],
-            lineOptions: {
-              styles: [{color: 'green', opacity: 1, weight: 5}]
-            },
-            summaryTemplate: '',
-          }).addTo(this.map);
-
-
-          L.marker([this.latitudActual, this.longitudActual],{title: 'Usted', draggable: false})
-          .addTo(this.map).bindPopup('<b>Usted</b><br>Se encuentra aqui').openPopup();
-
-          L.marker([36.84022819646473, -5.391387011548766],{title: 'Empresa', draggable: false})
-          .addTo(this.map).bindPopup('<b>Empresa</b><br>Calle de la empresa').openPopup();
-
-        });      
+            //this.latitudActual = event.latitude;
+            //this.longitudActual = event.longitude;
+  
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+                .addTo(this.map);
+            
+            L.Routing.control({
+              waypoints: [
+                  L.latLng(36.84022819646473, -5.391387011548766),
+                  L.latLng(this.latitudActual, this.longitudActual)
+              ],
+              lineOptions: {
+                styles: [{color: 'green', opacity: 1, weight: 5}]
+              },
+              summaryTemplate: '',
+            }).addTo(this.map);
+  
+  
+            L.marker([this.latitudActual, this.longitudActual],{title: 'Usted', draggable: false})
+            .addTo(this.map).bindPopup('<b>Usted</b><br>Se encuentra aqui').openPopup();
+  
+            L.marker([36.84022819646473, -5.391387011548766],{title: 'Empresa', draggable: false})
+            .addTo(this.map).bindPopup('<b>Empresa</b><br>Calle de la empresa').openPopup();
+  
+         //});      
+         }).catch((error) => {
+           console.log('Error getting location', error);
+         });
   }
 
   // clearMap(){
