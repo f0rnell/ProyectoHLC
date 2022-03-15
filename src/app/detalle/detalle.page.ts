@@ -86,11 +86,15 @@ export class DetallePage implements OnInit {
   }
 
   clicBotonCompartir(){
+    let imageURL = ('https://mescreen.net/' + btoa(this.documentJugador.data.foto)) + '.html.jpg';
     // Check if sharing via email is supported
     this.socialSharing.share(
-      "El jugador" + this.documentJugador.data.nombre + "que juega en " + this.documentJugador.data.equipo 
-      + "lleva" + this.documentJugador.data.goles + "goles"
-    ,'adios').then(() => {
+      "El jugador " + this.documentJugador.data.nombre + " que juega en " + this.documentJugador.data.equipo 
+      + ", lleva " + this.documentJugador.data.golesTemporada + " goles en " + this.documentJugador.data.partidosJugados 
+      + " partidos jugados",
+    null,
+    imageURL
+    ).then(() => {
       // Sharing via email is possible
     }).catch(() => {
       // Sharing via email is not possible
