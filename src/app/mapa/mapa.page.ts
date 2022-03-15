@@ -38,7 +38,7 @@ export class MapaPage implements OnInit {
             //this.latitudActual = event.latitude;
             //this.longitudActual = event.longitude;
   
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+            L.tileLayer('https://a.tile.openstreetmap.de/{z}/{x}/{y}.png')
                 .addTo(this.map);
             
             L.Routing.control({
@@ -49,7 +49,8 @@ export class MapaPage implements OnInit {
               lineOptions: {
                 styles: [{color: 'green', opacity: 1, weight: 5}]
               },
-              summaryTemplate: '',
+              summaryTemplate: '<p>{name}</p><p style="text-align:right;">{distance}, {time}</p><style> .leaflet-right .leaflet-routing-container { padding: 5px; background-color: #383839; }.leaflet-routing-alt table {display:none!important;} </style>',
+              
             }).addTo(this.map);
   
   

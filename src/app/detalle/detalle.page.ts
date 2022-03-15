@@ -87,7 +87,10 @@ export class DetallePage implements OnInit {
 
   clicBotonCompartir(){
     // Check if sharing via email is supported
-    this.socialSharing.share(this.documentJugador.data.nombre,'adios').then(() => {
+    this.socialSharing.share(
+      "El jugador" + this.documentJugador.data.nombre + "que juega en " + this.documentJugador.data.equipo 
+      + "lleva" + this.documentJugador.data.goles + "goles"
+    ,'adios').then(() => {
       // Sharing via email is possible
     }).catch(() => {
       // Sharing via email is not possible
